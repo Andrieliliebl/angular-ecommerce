@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { CartService } from '../../core/cart.service';
+import { Product } from '../../models/product';
 
 @Component({
   selector: 'app-header',
@@ -8,5 +10,10 @@ import { Component } from '@angular/core';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+  constructor(private cartService: CartService){
 
+  }
+addToCart(product: Product) {
+    this.cartService.addToCart(product);
+  }
 }
