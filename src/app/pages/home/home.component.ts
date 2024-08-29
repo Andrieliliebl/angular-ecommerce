@@ -3,24 +3,25 @@ import { ProductApi } from '../../core/productsApi.service';
 import { CommonModule, NgFor } from '@angular/common';
 import { Product } from '../../models/product';
 import { Observable, of, throwError } from 'rxjs';
-import { HeaderComponent } from "../../shared/header/header.component";
-import { FooterComponent } from "../../shared/footer/footer.component";
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+
+import { RouterLink, RouterLinkActive, RouterOutlet, withComponentInputBinding } from '@angular/router';
+import { AddToCartComponent } from "../../shared/add-to-cart/add-to-cart.component";
+import { AddToFavComponent } from "../../shared/add-to-fav/add-to-fav.component";
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, RouterOutlet, NgFor, CommonModule, HeaderComponent, FooterComponent],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet, NgFor, CommonModule, AddToCartComponent, AddToFavComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
-  providers: [ProductApi]
+  providers: [ProductApi,]
 })
 
 export class HomeComponent implements OnInit {
   //criamos um observable de Product que no início está vazio:
   products: Observable<Product[]> = new Observable<Product[]>();
-  snackBar: any;
+
 
   constructor(
     //indicamos o serviço da api para que busque a lista de produtos
@@ -38,11 +39,7 @@ export class HomeComponent implements OnInit {
       },
       //se deu errado vai pro erro
       error: (error) => {
-        this.snackBar.open('Houve um erro ao buscar produtos!', 'Ok', {
-          duration: 2000,
-          verticalPosition: 'bottom',
-          horizontalPosition: 'end'
-        });
+        debugger
       }
     })
   }

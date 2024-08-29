@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { CartService } from '../../core/cart.service';
-import { Product } from '../../models/product';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 @Component({
@@ -10,11 +8,9 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export class HeaderComponent {
-  constructor(private cartService: CartService){
+             export class HeaderComponent {
+
+
+
 
   }
-addToCart(product: Product) {
-    this.cartService.addToCart(product);
-  }
-}
