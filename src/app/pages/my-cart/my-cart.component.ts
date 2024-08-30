@@ -1,15 +1,44 @@
-import { Component } from '@angular/core';
-import { RemoveFavComponent } from "../../shared/remove-fav/remove-fav.component";
-import { AddToFavComponent } from "../../shared/add-to-fav/add-to-fav.component";
-import { RemoveCartComponent } from "../../shared/remove-cart/remove-cart.component";
+import { Component, inject, Injectable, OnInit } from '@angular/core';
+import { Product } from '../../models/product';
+import { CartService } from '../../core/cart.service';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
+import { FavsService } from '../../core/favs.service';
 
 @Component({
   selector: 'app-my-cart',
   standalone: true,
-  imports: [RemoveFavComponent, AddToFavComponent, RemoveCartComponent],
+  imports: [NgIf, NgFor, CommonModule],
   templateUrl: './my-cart.component.html',
   styleUrl: './my-cart.component.css'
 })
-export class MyCartComponent {
 
+export class MyCartComponent implements OnInit {
+
+  cartItems: Product[] = [];
+  totalPrice: number = 0;
+
+  constructor(private cartService: CartService,
+    private favsService: FavsService,
+
+  ) { }
+
+  ngOnInit() {
+    this.cartService.cart$.subscribe(items => {
+      this.cartItems = items;
+      this.totalPrice = this.cartService.getTotalPrice();
+    });
+  }
+
+  removeFromCart(productId: number) {
+    this.cartService.removeFromCart(productId);
+    this.totalPrice = this.cartService.getTotalPrice(); 
+  }
+
+  clearCart() {
+    this.cartService.clearCart()
+  }
+
+  addToFavs(product: Product) {
+    this.favsService.addToFavs(product);
+  }
 }

@@ -3,16 +3,14 @@ import { ProductApi } from '../../core/productsApi.service';
 import { CommonModule, NgFor } from '@angular/common';
 import { Product } from '../../models/product';
 import { Observable, of, throwError } from 'rxjs';
-
 import { RouterLink, RouterLinkActive, RouterOutlet, withComponentInputBinding } from '@angular/router';
-import { AddToCartComponent } from "../../shared/add-to-cart/add-to-cart.component";
-import { AddToFavComponent } from "../../shared/add-to-fav/add-to-fav.component";
-
+import { CartService } from '../../core/cart.service';
+import { FavsService } from '../../core/favs.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, RouterOutlet, NgFor, CommonModule, AddToCartComponent, AddToFavComponent],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet, NgFor, CommonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
   providers: [ProductApi,]
@@ -26,6 +24,10 @@ export class HomeComponent implements OnInit {
   constructor(
     //indicamos o serviço da api para que busque a lista de produtos
     private productsApi: ProductApi,
+    private cartService: CartService,
+    private favsService: FavsService,
+
+
   ) { }
 
   ngOnInit(): void {
@@ -42,5 +44,13 @@ export class HomeComponent implements OnInit {
         debugger
       }
     })
+  }
+
+  addToCart(product: Product) {
+    this.cartService.addToCart(product);
+  }
+
+  addToFavs(product: Product) {
+    this.favsService.addToFavs(product);
   }
 }
